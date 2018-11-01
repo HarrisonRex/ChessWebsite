@@ -1,6 +1,6 @@
 package server.controllers;
 
-import server.Logger;
+import server.Console;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -58,10 +58,10 @@ public class ClientController {
             DataInputStream dis = new DataInputStream(new FileInputStream(file));
             dis.readFully(fileData);
             dis.close();
-            Logger.log("Sending: " + filename);
+            Console.log("Sending: " + filename);
             return fileData;
         } catch (IOException ioe) {
-            Logger.log("File IO error: " + ioe.getMessage());
+            Console.log("File IO error: " + ioe.getMessage());
         }
         return null;
     }

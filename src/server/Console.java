@@ -3,7 +3,7 @@ package server;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Logger {
+public class Console {
 
     public static void log(String text) {
         SimpleDateFormat simpleDate = new SimpleDateFormat("HH:mm:ss.SSS dd/MM/yyyy");

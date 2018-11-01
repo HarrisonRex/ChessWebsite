@@ -17,8 +17,51 @@
     <script src="/client/js/login.js"></script>
 
 </head>
-<body>
+<body onload="pageLoad()">
 
+    <div>
+       <form id="loginForm">
+           <h2>Login</h2>
+           <div>
+               <label>Username:
+                   <input name="username" required autofocus>
+               </label>
+           </div>
+           <div>
+               <label>Password:
+                   <input type="password" name="password" required>
+               </label>
+               <button>Login</button>
+           </div>
+       </form>
+    </div>
+
+    <div>
+        <form id="CreateUserForm">
+            <h2>Create New Account</h2>
+            <div>
+                <label>Username:
+                    <input name="username" required>
+                </label>
+            </div>
+            <div>
+                <label>Email:
+                    <input name="email" required>
+                </label>
+            </div>
+            <div>
+                <label>Password
+                    <input type="password" name="password1" required>
+                </label>
+                <label>Confirm password
+                    <input type="password" name="password2" required>
+                </label>
+            </div>
+            <div>
+                <button>Create</button>
+            </div>
+        </form>
+    </div>
 
 
 </body>
