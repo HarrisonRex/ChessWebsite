@@ -10,6 +10,8 @@ public class ServerStart {
 
     public static void main(String[] args) {
 
+        DatabaseConnection.open("database.db");
+
         ResourceConfig config = new ResourceConfig();
         config.packages("server");
         ServletHolder servlet = new ServletHolder(new ServletContainer(config));
@@ -26,6 +28,7 @@ public class ServerStart {
             e.printStackTrace();
         } finally {
             server.destroy();
+            DatabaseConnection.close();
         }
     }
 }
