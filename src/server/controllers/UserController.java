@@ -1,5 +1,6 @@
 package server.controllers;
 
+import server.BCrypt;
 import server.Console;
 import server.models.User;
 import server.models.services.UserService;
@@ -32,6 +33,14 @@ public class UserController {
         String token = UUID.randomUUID().toString();
         int userId = User.nextId();
         String success = UserService.insert(new User(userId, 1500, name, password1, email, token));
+        String test = BCrypt.hashpw(password1,BCrypt.gensalt(userId));
+        Console.log(test);
+        boolean tester = (BCrypt.checkpw(password1, test));
+        if(tester==true){
+            Console.log("Yeah");
+        }else{
+            Console.log("No");
+        }
         if (success.equals("OK")) {
             return token;
         } else {
@@ -79,5 +88,4 @@ public class UserController {
             return currentUser;
         }
     }
-
 }
