@@ -4,30 +4,148 @@
 
         <title>Cheesy Chess</title>
 
-        <link rel="shortcut icon" href="/client/favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="/client/img/favicon.ico" type="image/x-icon">
+        <link href="/client/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/client/css/board.css" rel="stylesheet">
 
         <script src="/client/js/jquery-3.3.1.min.js"></script>
         <script src="/client/js/popper.min.js"></script>
         <script src="/client/js/bootstrap.min.js"></script>
         <script src="/client/js/js.cookie.min.js"></script>
         <script src="/client/js/querystring.js"></script>
-
-        <link href="/client/css/bootstrap.min.css" rel="stylesheet">
-
         <script src="/client/js/index.js"></script>
+
 
     </head>
 
-    <body class="bg-dark" onload="pageLoad()">
+    <body onload="pageLoad()">
 
-        <div class="container bg-white pb-4">
-
-            <h1 class="text-center p-4">Smell project</h1>
-            <h3 class="text-center">You Genuinely Stink!</h3>
-
+        <div >
+            Things go here right?
         </div>
-        <button id="logout">
-            Log out
-        </button>
+        <div id="board" style="text-align:center">
+            <table class="chessBoard">
+                <tr>
+                    <td class="ends"></td>
+                    <td class="ends">A</td>
+                    <td class="ends">B</td>
+                    <td class="ends">C</td>
+                    <td class="ends">D</td>
+                    <td class="ends">E</td>
+                    <td class="ends">F</td>
+                    <td class="ends">G</td>
+                    <td class="ends">H</td>
+                </tr>
+                <tr class="chessBoard">
+                    <td class="ends"></td>
+                    <td class="chessBoard"><div id="A8">A8</div></td>
+                    <td class="chessBoard"><div id="B8">B8</div></td>
+                    <td class="chessBoard"><div id="C8">C8</div></td>
+                    <td class="chessBoard"><div id="D8">D8</div></td>
+                    <td class="chessBoard"><div id="E8">E8</div></td>
+                    <td class="chessBoard"><div id="F8">F8</div></td>
+                    <td class="chessBoard"><div id="G8">G8</div></td>
+                    <td class="chessBoard"><div id="H8">H8</div></td>
+                    <td class="ends">8</td>
+                </tr>
+                <tr class="chessBoard">
+                    <td class="ends"></td>
+                    <td class="chessBoard"><div id="A7">A7</div></td>
+                    <td class="chessBoard"><div id="B7">B7</div></td>
+                    <td class="chessBoard"><div id="C7">C7</div></td>
+                    <td class="chessBoard"><div id="D7">D7</div></td>
+                    <td class="chessBoard"><div id="E7">E7</div></td>
+                    <td class="chessBoard"><div id="F7">F7</div></td>
+                    <td class="chessBoard"><div id="G7">G7</div></td>
+                    <td class="chessBoard"><div id="H7">H7</div></td>
+                    <td class="ends">7</td>
+                </tr>
+                <tr class="chessBoard">
+                    <td class="ends"></td>
+                    <td class="chessBoard"><div id="A6">A6</div></td>
+                    <td class="chessBoard"><div id="B6">B6</div></td>
+                    <td class="chessBoard"><div id="C6">C6</div></td>
+                    <td class="chessBoard"><div id="D6">D6</div></td>
+                    <td class="chessBoard"><div id="E6">E6</div></td>
+                    <td class="chessBoard"><div id="F6">F6</div></td>
+                    <td class="chessBoard"><div id="G6">G6</div></td>
+                    <td class="chessBoard"><div id="H6">H6</div></td>
+                    <td class="ends">6</td>
+                </tr>
+                <tr class="chessBoard">
+                    <td class="ends"></td>
+                    <td class="chessBoard"><div id="A5">A5</div></td>
+                    <td class="chessBoard"><div id="B5">B5</div></td>
+                    <td class="chessBoard"><div id="C5">C5</div></td>
+                    <td class="chessBoard"><div id="D5">D5</div></td>
+                    <td class="chessBoard"><div id="E5">E5</div></td>
+                    <td class="chessBoard"><div id="F5">F5</div></td>
+                    <td class="chessBoard"><div id="G5">G5</div></td>
+                    <td class="chessBoard"><div id="H5">H5</div></td>
+                    <td class="ends">5</td>
+                </tr>
+                <tr class="chessBoard">
+                    <td class="ends"></td>
+                    <td class="chessBoard"><div id="A4">A4</div></td>
+                    <td class="chessBoard"><div id="B4">B4</div></td>
+                    <td class="chessBoard"><div id="C4">C4</div></td>
+                    <td class="chessBoard"><div id="D4">D4</div></td>
+                    <td class="chessBoard"><div id="E4">E4</div></td>
+                    <td class="chessBoard"><div id="F4">F4</div></td>
+                    <td class="chessBoard"><div id="G4">G4</div></td>
+                    <td class="chessBoard"><div id="H4">H4</div></td>
+                    <td class="ends">4</td>
+                </tr>
+                <tr class="chessBoard">
+                    <td class="ends"></td>
+                    <td class="chessBoard"><div id="A3">A3</div></td>
+                    <td class="chessBoard"><div id="B3">B3</div></td>
+                    <td class="chessBoard"><div id="C3">C3</div></td>
+                    <td class="chessBoard"><div id="D3">D3</div></td>
+                    <td class="chessBoard"><div id="E3">E3</div></td>
+                    <td class="chessBoard"><div id="F3">F3</div></td>
+                    <td class="chessBoard"><div id="G3">G3</div></td>
+                    <td class="chessBoard"><div id="H3">H3</div></td>
+                    <td class="ends">3</td>
+                </tr>
+                <tr class="chessBoard">
+                    <td class="ends"></td>
+                    <td class="chessBoard"><div id="A2">A2</div></td>
+                    <td class="chessBoard"><div id="B2">B2</div></td>
+                    <td class="chessBoard"><div id="C2">C2</div></td>
+                    <td class="chessBoard"><div id="D2">D2</div></td>
+                    <td class="chessBoard"><div id="E2">E2</div></td>
+                    <td class="chessBoard"><div id="F2">F2</div></td>
+                    <td class="chessBoard"><div id="G2">G2</div></td>
+                    <td class="chessBoard"><div id="H2">H2</div></td>
+                    <td class="ends">2</td>
+                </tr>
+                <tr class="chessBoard">
+                    <td class="ends"></td>
+                    <td class="chessBoard"><div id="A1">A1</div></td>
+                    <td class="chessBoard"><div id="B1">B1</div></td>
+                    <td class="chessBoard"><div id="C1">C1</div></td>
+                    <td class="chessBoard"><div id="D1">D1</div></td>
+                    <td class="chessBoard"><div id="E1">E1</div></td>
+                    <td class="chessBoard"><div id="F1">F1</div></td>
+                    <td class="chessBoard"><div id="G1">G1</div></td>
+                    <td class="chessBoard"><div id="H1">H1</div></td>
+                    <td class="ends">1</td>
+                </tr>
+                <tr>
+                    <td class="ends"></td>
+                    <td class="ends"></td>
+                    <td class="ends"></td>
+                    <td class="ends"></td>
+                    <td class="ends"></td>
+                    <td class="ends"></td>
+                    <td class="ends"></td>
+                    <td class="ends"></td>
+                    <td class="ends"></td>
+                </tr>
+            </table>
+        </div>
+        <button id="logout">Log out</button>
+        <button id="Chesser" onclick="boardSetChess()">Set a chess board</button>
     </body>
 </html>

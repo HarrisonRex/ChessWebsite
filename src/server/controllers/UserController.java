@@ -32,15 +32,9 @@ public class UserController {
         }
         String token = UUID.randomUUID().toString();
         int userId = User.nextId();
-        String success = UserService.insert(new User(userId, 1500, name, password1, email, token));
-        String test = BCrypt.hashpw(password1,BCrypt.gensalt(userId));
-        Console.log(test);
-        boolean tester = (BCrypt.checkpw(password1, test));
-        if(tester==true){
-            Console.log("Yeah");
-        }else{
-            Console.log("No");
-        }
+        String password = BCrypt.hashpw(password1,BCrypt.gensalt());
+        String success = UserService.insert(new User(userId, 1500, name, password, email, token));
+
         if (success.equals("OK")) {
             return token;
         } else {
@@ -59,7 +53,8 @@ public class UserController {
         UserService.selectAllInto(User.users);
         for (User u: User.users) {
             if (u.getName().toLowerCase().equals(username.toLowerCase())) {
-                if (!u.getPassword().equals(password)) {
+                boolean tester = (BCrypt.checkpw(password, u.getPassword()));
+                if (!tester) {
                     return "Error: Incorrect password";
                 }
                 String token = UUID.randomUUID().toString();

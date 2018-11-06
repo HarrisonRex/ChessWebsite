@@ -133,7 +133,7 @@ public class UserService {
             if (result.equals("OK")) {
                 for (User u : User.users) {
                     if (u.getSessionToken().equals(token)) {
-                        Console.log("Valid session token received.");
+                        Console.log("Valid session token received for user: " + u.getName() + ".");
                         return u.getName();
                     }
                 }

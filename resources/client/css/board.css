@@ -1,0 +1,17 @@
+table.chessBoard {
+    margin: 5px auto;
+    background: #ffffff;
+}
+td.chessBoard {
+    width: 70px; height: 70px;
+    border: 2px solid #333;
+    font-size: 42px;
+}
+td.ends {
+    width: 70px; height: 70px;
+    font-size: 30px;
+}
+tr.chessBoard:nth-child(even) td.chessBoard:nth-child(odd) ,
+tr.chessBoard:nth-child(odd) td.chessBoard:nth-child(even) {
+    background: #696969;
+}

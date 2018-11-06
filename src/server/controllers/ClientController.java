@@ -46,7 +46,7 @@ public class ClientController {
     @Path("favicon.ico")
     @Produces({"image/x-icon"})
     public byte[] getFavicon() {
-        return getFile("client/favicon.ico");
+        return getFile("client/img/favicon.ico");
     }
 
 
@@ -58,7 +58,6 @@ public class ClientController {
             DataInputStream dis = new DataInputStream(new FileInputStream(file));
             dis.readFully(fileData);
             dis.close();
-            Console.log("Sending: " + filename);
             return fileData;
         } catch (IOException ioe) {
             Console.log("File IO error: " + ioe.getMessage());
