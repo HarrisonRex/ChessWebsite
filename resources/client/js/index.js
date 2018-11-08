@@ -1,5 +1,7 @@
 function pageLoad() {
     checkLogin();
+    //$("#gameMaker").hide();
+    resetNewGameForm();
 }
 
 function checkLogin() {
@@ -92,4 +94,24 @@ function boardSetChess(){
             $('#' + BSP).html("");
         }
     }
+}
+
+function resetNewGameForm(){
+    const CreateGameForm = $('#newGameForm');
+    CreateGameForm.submit(event => {
+        event.preventDefault();
+    $.ajax({
+        url: '/games/new',
+        type: 'POST',
+        data: CreateGameForm.serialize(),
+        success: response => {
+            if(response.startsWith('Error:')){
+                alert(response);
+            }else{
+                $("#gameMaker").hide()
+            }
+        }
+
+        })
+    })
 }

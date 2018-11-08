@@ -20,7 +20,7 @@ public class UserController {
                              @FormParam("email") String email,
                              @FormParam("password1") String password1,
                              @FormParam("password2") String password2) {
-        Console.log("/user/new - Creating " + name);
+        Console.log("/user/new - Creating new user: " + name);
         UserService.selectAllInto(User.users);
         for (User u: User.users) {
             if (u.getName().toLowerCase().equals(name.toLowerCase())) {
@@ -49,7 +49,7 @@ public class UserController {
     public String newMessage(@FormParam("username") String username,
                              @FormParam("password") String password ) {
 
-        Console.log("/user/login - Attempt by " + username);
+        Console.log("/user/login - Attempt by user: " + username +".");
         UserService.selectAllInto(User.users);
         for (User u: User.users) {
             if (u.getName().toLowerCase().equals(username.toLowerCase())) {
@@ -61,6 +61,7 @@ public class UserController {
                 u.setSessionToken(token);
                 String success = UserService.update(u);
                 if (success.equals("OK")) {
+                    Console.log("Login success for user: " + username +".");
                     return token;
                 } else {
                     return "Error: Can't create session token.";

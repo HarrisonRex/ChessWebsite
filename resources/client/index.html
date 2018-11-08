@@ -16,13 +16,8 @@
         <script src="/client/js/index.js"></script>
 
 
-    </head>
-
     <body onload="pageLoad()">
-
-        <div >
-            Things go here right?
-        </div>
+        Things go here right?
         <div id="board" style="text-align:center">
             <table class="chessBoard">
                 <tr>
@@ -147,5 +142,12 @@
         </div>
         <button id="logout">Log out</button>
         <button id="Chesser" onclick="boardSetChess()">Set a chess board</button>
+        <button id="showNewGame" onclick="$(&quot#gameMaker&quot).show();">Make a new game</button>
+        <div id="gameMaker">
+            Create new game:
+            <form id="newGameForm">
+
+            </form>
+        </div>
     </body>
 </html>
