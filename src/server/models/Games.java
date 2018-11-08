@@ -11,25 +11,12 @@ public class Games {
     private int ownerWhite;
     private String moveHistory;
 
-
-    public static ArrayList<Games> gamess = new ArrayList<>();
-
     public Games(int gameId, int owner, int player2, int ownerWhite, String moveHistory) {
         this.gameId = gameId;
         this.owner = owner;
         this.player2 = player2;
         this.ownerWhite = ownerWhite;
         this.moveHistory = moveHistory;
-    }
-
-    public static int nextId() {
-        int id = 0;
-        for (Games g : gamess) {
-            if (g.getGameId() > id) {
-                id = g.getGameId();
-            }
-        }
-        return id + 1;
     }
 
     @SuppressWarnings("unchecked")
@@ -83,5 +70,17 @@ public class Games {
 
     public void setMoveHistory(String moveHistory) {
         this.moveHistory = moveHistory;
+    }
+
+    public static ArrayList<Games> gamess = new ArrayList<>();
+
+    public static int nextId() {
+        int id = 0;
+        for (Games g : gamess) {
+            if (g.getGameId() > id) {
+                id = g.getGameId();
+            }
+        }
+        return id + 1;
     }
 }
