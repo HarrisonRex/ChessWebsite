@@ -8,13 +8,13 @@ public class Games {
     private int gameId;
     private int owner;
     private int player2;
-    private boolean ownerWhite;
+    private int ownerWhite;
     private String moveHistory;
 
 
     public static ArrayList<Games> gamess = new ArrayList<>();
 
-    public Games(int gameId, int owner, int player2, boolean ownerWhite, String moveHistory) {
+    public Games(int gameId, int owner, int player2, int ownerWhite, String moveHistory) {
         this.gameId = gameId;
         this.owner = owner;
         this.player2 = player2;
@@ -69,11 +69,11 @@ public class Games {
         this.player2 = player2;
     }
 
-    public boolean getOwnerWhite() {
+    public int getOwnerWhite() {
         return ownerWhite;
     }
 
-    public void setOwnerWhite(boolean ownerWhite) {
+    public void setOwnerWhite(int ownerWhite) {
         this.ownerWhite = ownerWhite;
     }
 

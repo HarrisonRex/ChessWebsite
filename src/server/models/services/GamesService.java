@@ -21,7 +21,7 @@ public class GamesService {
                 ResultSet results = statement.executeQuery();
                 if (results != null) {
                     while (results.next()) {
-                        targetList.add(new Games(results.getInt("gameId"), results.getInt("Owner"), results.getInt("player2"), results.getBoolean("OwnerWhite"), results.getString("MoveHistory")));
+                        targetList.add(new Games(results.getInt("gameId"), results.getInt("Owner"), results.getInt("player2"), results.getInt("OwnerWhite"), results.getString("MoveHistory")));
 
 
                     }
@@ -46,7 +46,7 @@ public class GamesService {
                 statement.setInt(1, id);
                 ResultSet results = statement.executeQuery();
                 if (results != null && results.next()) {
-                    result = new Games(results.getInt("gameId"), results.getInt("Owner"), results.getInt("player2"), results.getBoolean("OwnerWhite"), results.getString("MoveHistory"));
+                    result = new Games(results.getInt("gameId"), results.getInt("Owner"), results.getInt("player2"), results.getInt("OwnerWhite"), results.getString("MoveHistory"));
 
 
                 }
@@ -67,7 +67,7 @@ public class GamesService {
             statement.setInt(1, itemToSave.getGameId());
             statement.setInt(2, itemToSave.getOwner());
             statement.setInt(3, itemToSave.getPlayer2());
-            statement.setBoolean(4, itemToSave.getOwnerWhite());
+            statement.setInt(4, itemToSave.getOwnerWhite());
             statement.setString(5, itemToSave.getMoveHistory());
 
 
@@ -91,7 +91,7 @@ public class GamesService {
             );
             statement.setInt(1, itemToSave.getOwner());
             statement.setInt(2, itemToSave.getPlayer2());
-            statement.setBoolean(3, itemToSave.getOwnerWhite());
+            statement.setInt(3, itemToSave.getOwnerWhite());
             statement.setString(4, itemToSave.getMoveHistory());
 
 

@@ -1,6 +1,6 @@
 function pageLoad() {
     checkLogin();
-    //$("#gameMaker").hide();
+    $("#gameMaker").hide();
     resetNewGameForm();
 }
 
@@ -19,6 +19,7 @@ function checkLogin() {
                     window.location.href = "/client/login.html";
                 } else {
                     $("#username").html(username);
+                    $("#userRecon").html("You are logged in as " + username);
                 }
             }
         });
@@ -108,10 +109,10 @@ function resetNewGameForm(){
             if(response.startsWith('Error:')){
                 alert(response);
             }else{
-                $("#gameMaker").hide()
+                $("#gameMaker").hide();
+                pageLoad();
             }
         }
-
         })
     })
 }
