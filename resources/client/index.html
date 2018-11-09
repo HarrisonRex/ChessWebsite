@@ -17,6 +17,8 @@
 
 
     <body onload="pageLoad()">
+        <div>Pending Friend Requests:</div>
+        <div id="pendingFriendsShower"></div>
         <div id="board" style="text-align:center">
             <table class="chessBoard">
                 <tr>
@@ -143,16 +145,26 @@
         <button id="logout">Log out</button>
         <button id="Chesser" onclick="boardSetChess()">Set a chess board</button>
         <button id="showNewGame" onclick="$(&quot#gameMaker&quot).show(500);">Make a new game</button>
+        <button id="showNewFriend" onclick="$(&quot#newFriend&quot).show(500);">Add a new friend</button>
         <div id="gameMaker">
             Create new game:
             <form id="newGameForm">
                 <label>Opponent:
-                    <input name="player2" required>
+                    <input name="newGameFormPlayer2" required>
                 </label>
                 <label>Are you going to be white?
-                    <input type="checkbox" name="ownerWhite" value=1>
+                    <input type="checkbox" name="newGameFormOwnerWhite" value=1>
                 </label>
                 <button>Create</button>
+            </form>
+        </div>
+        <div id="newFriend">
+            Add a new friend:
+            <form id="newFriendForm">
+                <label>Username:
+                    <input name ="newFriendFormFriend">
+                </label>
+                <Button>Add</Button>
             </form>
         </div>
     </body>

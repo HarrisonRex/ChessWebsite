@@ -8,6 +8,9 @@ public class FriendsList {
     private int friendsListId;
     private int user;
     private int user2;
+    private int pending;
+    private String user1UN;
+    private String user2UN;
 
 
     public static ArrayList<FriendsList> friendslists = new ArrayList<>();
@@ -22,12 +25,39 @@ public class FriendsList {
         return id + 1;
     }
 
-    public FriendsList(int friendsListId, int user, int user2) {
+    public FriendsList(int friendsListId, int user, int user2, int pending, String user1UN, String user2UN) {
         this.friendsListId = friendsListId;
         this.user = user;
         this.user2 = user2;
+        this.pending = pending;
+        this.user1UN = user1UN;
+        this.user2UN = user2UN;
     }
 
+
+    public String getUser1UN() {
+        return user1UN;
+    }
+
+    public void setUser1UN(String user1UN) {
+        this.user1UN = user1UN;
+    }
+
+    public String getUser2UN() {
+        return user2UN;
+    }
+
+    public void setUser2UN(String user2UN) {
+        this.user2UN = user2UN;
+    }
+
+    public int getPending() {
+        return pending;
+    }
+
+    public void setPending(int pending) {
+        this.pending = pending;
+    }
 
     public int getFriendsListId() {
         return friendsListId;
@@ -59,6 +89,9 @@ public class FriendsList {
         j.put("friendsListId", getFriendsListId());
         j.put("user", getUser());
         j.put("user2", getUser2());
+        j.put("pending", getPending());
+        j.put("user1UN", getUser1UN());
+        j.put("user2UN", getUser2UN());
         return j;
     }
 }

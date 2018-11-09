@@ -15,13 +15,13 @@ public class FriendsListService {
         targetList.clear();
         try {
             PreparedStatement statement = DatabaseConnection.newStatement(
-                    "SELECT friendsListId, User, User2 FROM FriendsList"
+                    "SELECT friendsListId, User, User2, pending, User1UN, User2UN FROM FriendsList"
             );
             if (statement != null) {
                 ResultSet results = statement.executeQuery();
                 if (results != null) {
                     while (results.next()) {
-                        targetList.add(new FriendsList(results.getInt("friendsListId"), results.getInt("User"), results.getInt("User2")));
+                        targetList.add(new FriendsList(results.getInt("friendsListId"), results.getInt("User"), results.getInt("User2"), results.getInt("pending"), results.getString("User1UN"), results.getString("User2UN")));
 
 
                     }
@@ -40,13 +40,13 @@ public class FriendsListService {
         FriendsList result = null;
         try {
             PreparedStatement statement = DatabaseConnection.newStatement(
-                    "SELECT friendsListId, User, User2 FROM FriendsList WHERE friendsListId = ?"
+                    "SELECT friendsListId, User, User2, pending, User1UN, User2UN FROM FriendsList WHERE friendsListId = ?"
             );
             if (statement != null) {
                 statement.setInt(1, id);
                 ResultSet results = statement.executeQuery();
                 if (results != null && results.next()) {
-                    result = new FriendsList(results.getInt("friendsListId"), results.getInt("User"), results.getInt("User2"));
+                    result = new FriendsList(results.getInt("friendsListId"), results.getInt("User"), results.getInt("User2"), results.getInt("pending"), results.getString("User1UN"), results.getString("User2UN"));
 
 
                 }
@@ -62,14 +62,14 @@ public class FriendsListService {
     public static String insert(FriendsList itemToSave) {
         try {
             PreparedStatement statement = DatabaseConnection.newStatement(
-                    "INSERT INTO FriendsList (friendsListId, User, User2) VALUES (?, ?, ?)"
+                    "INSERT INTO FriendsList (friendsListId, User, User2, pending, User1UN, User2UN) VALUES (?, ?, ?, ?, ?, ?)"
             );
             statement.setInt(1, itemToSave.getFriendsListId());
             statement.setInt(2, itemToSave.getUser());
             statement.setInt(3, itemToSave.getUser2());
-
-
-
+            statement.setInt(4, itemToSave.getPending());
+            statement.setString(5, itemToSave.getUser1UN());
+            statement.setString(6, itemToSave.getUser2UN());
 
 
 
@@ -87,18 +87,18 @@ public class FriendsListService {
     public static String update(FriendsList itemToSave) {
         try {
             PreparedStatement statement = DatabaseConnection.newStatement(
-                    "UPDATE FriendsList SET User = ?, User2 = ? WHERE friendsListId = ?"
+                    "UPDATE FriendsList SET User = ?, User2 = ?, pending = ?, User1UN = ?, User2UN = ? WHERE friendsListId = ?"
             );
             statement.setInt(1, itemToSave.getUser());
             statement.setInt(2, itemToSave.getUser2());
+            statement.setInt(3, itemToSave.getPending());
+            statement.setString(4, itemToSave.getUser1UN());
+            statement.setString(5, itemToSave.getUser2UN());
 
 
 
 
-
-
-
-            statement.setInt(3, itemToSave.getFriendsListId());
+            statement.setInt(6, itemToSave.getFriendsListId());
             statement.executeUpdate();
             return "OK";
         } catch (SQLException resultsException) {

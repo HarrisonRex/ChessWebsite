@@ -15,8 +15,8 @@ public class GamesController {
     @Path("new")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_PLAIN)
-    public String newGame (@FormParam("player2") String player2UN,
-                           @FormParam("ownerWhite") int ownWhite,
+    public String newGame (@FormParam("newGameFormPlayer2") String player2UN,
+                           @FormParam("newGameFormOwnerWhite") int ownWhite,
                            @CookieParam("sessionToken") Cookie sessionCookie) {
 
         GamesService.selectAllInto(Games.gamess);
@@ -40,7 +40,6 @@ public class GamesController {
                 opo = u.getId();
             }
         }
-
         if (creator==0){
             return "Error: Can't find current user.";
         }else if (opo==0){

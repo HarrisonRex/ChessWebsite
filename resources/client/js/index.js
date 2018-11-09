@@ -1,7 +1,10 @@
 function pageLoad() {
     checkLogin();
-    $("#gameMaker").hide();
     resetNewGameForm();
+    resetNewFriendForm()
+    loadPendingFriendsList()
+    $("#gameMaker").hide();
+    $("#newFriend").hide();
 }
 
 function checkLogin() {
@@ -114,4 +117,54 @@ function resetNewGameForm(){
         }
         })
     })
+}
+
+function resetNewFriendForm() {
+    const CreateNewFriend = $('#newFriendForm');
+    CreateNewFriend.submit(event => {
+        event.preventDefault();
+        $.ajax({
+            url: '/friendsList/new',
+            type: 'POST',
+            data: CreateNewFriend.serialize(),
+            success: response => {
+                if (response.startsWith('Error:')) {
+                    alert(response);
+                } else {
+                    $("#newFriend").hide();
+                }
+            }
+        })
+    })
+}
+
+function loadPendingFriendsList() {
+    let pendingFriendsListHTML = '';
+    $.ajax({
+        url: '/friendsList/pendingList',
+        type: 'GET',
+        success: pendingFriendsListList => {
+            if(pendingFriendsListList.hasOwnProperty('error')) {
+            alert(pendingFriendsListList.error);
+            }else{
+                for (let pendingFriend of pendingFriendsListList) {
+                    pendingFriendsListHTML += renderPendingFriend(pendingFriend);
+                }
+            }
+            $('#pendingFriendsShower').html(pendingFriendsListHTML);
+        }
+        })
+}
+
+function renderPendingFriend(pendingFriend) {
+    return `<div>` +
+        `<div class="messageTest" id="name${pendingFriend.friendsListId}">${pendingFriend.user1UN}` +
+        `<button class="acceptPendingFriend" data-pendingFriend-friendListId="${pendingFriend.friendsListId}">` +
+        `Accept` +
+        `</button>` +
+        `<button class="deletePendingFriend" data-pendingFriend-friendListId="${pendingFriend.friendsListId}">` +
+        `Reject` +
+        `</button>` +
+        `</div>` +
+        `</div>`;
 }
