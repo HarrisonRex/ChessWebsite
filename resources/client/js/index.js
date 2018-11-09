@@ -110,7 +110,6 @@ function resetNewGameForm(){
                 alert(response);
             }else{
                 $("#gameMaker").hide();
-                pageLoad();
             }
         }
         })

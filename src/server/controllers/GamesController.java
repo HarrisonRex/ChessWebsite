@@ -19,9 +19,12 @@ public class GamesController {
                            @FormParam("ownerWhite") int ownWhite,
                            @CookieParam("sessionToken") Cookie sessionCookie) {
 
+        GamesService.selectAllInto(Games.gamess);
+
         int creator = 0;
         int opo = 0;
         int whoWhite = 0;
+        String log;
         String maker;
         String currentUser = UserService.validateSessionCookie(sessionCookie);
         if (currentUser == null) {
@@ -50,9 +53,13 @@ public class GamesController {
             whoWhite = 0;
         }
         int gId = Games.nextId();
-        Console.log("Creating new game for: " + maker + " vs " + player2UN + ". " + gId);
-        String moveHist = "";
-        String success = GamesService.insert(new Games(gId, creator, opo, whoWhite, moveHist));
+        if(whoWhite==1){
+            log = "Creating new game with " + maker + " as white VS " + player2UN + " as black.";
+        }else{
+            log = "Creating new game with " + maker + " as black VS " + player2UN + " as white.";
+        }
+        Console.log(log);
+        String success = GamesService.insert(new Games(gId, creator, opo, whoWhite, null));
 
         if (!success.equals("OK")) {
             return "Error: Can't create new game.";
