@@ -120,12 +120,12 @@ public class FriendsListController {
         if (friend == null) {
             return "This entry in friendsList doesn't exist";
         } else {
-            if (!friend.getUser2UN().equals(currentUsername)) {
-                return "That's not your friend to delete";
-            } else if (!friend.getUser1UN().equals(currentUsername)) {
-                return "That's not your friend to delete";
-            }else{
+            if (friend.getUser2UN().equals(currentUsername)) {
                 return FriendsListService.deleteById(friendId);
+            } else if (friend.getUser1UN().equals(currentUsername)) {
+                return FriendsListService.deleteById(friendId);
+            }else{
+                return "That's not your friend to delete";
             }
         }
     }
