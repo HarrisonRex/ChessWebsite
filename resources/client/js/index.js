@@ -1,8 +1,9 @@
 function pageLoad() {
     checkLogin();
     resetNewGameForm();
-    resetNewFriendForm()
-    loadPendingFriendsList()
+    resetNewFriendForm();
+    loadPendingFriendsList();
+    loadFriendsList();
     $("#gameMaker").hide();
     $("#newFriend").hide();
 }
@@ -145,15 +146,37 @@ function loadPendingFriendsList() {
         type: 'GET',
         success: pendingFriendsListList => {
             if(pendingFriendsListList.hasOwnProperty('error')) {
-            alert(pendingFriendsListList.error);
+                alert(pendingFriendsListList.error);
             }else{
+                pendingFriendsListHTML = "Pending Friend Requests:"
                 for (let pendingFriend of pendingFriendsListList) {
                     pendingFriendsListHTML += renderPendingFriend(pendingFriend);
                 }
             }
             $('#pendingFriendsShower').html(pendingFriendsListHTML);
+            resetDeletePendingFriend();
+            resetAcceptPendingFriend();
         }
         })
+}
+
+function loadFriendsList() {
+    let friendsListHTML;
+    $.ajax({
+        url: '/friendsList/list',
+        type: 'GET',
+        success: friendsListList => {
+            if(friendsListList.hasOwnProperty('error')) {
+                alert(friendsListList.error);
+            }else{
+                for (let friend of friendsListList) {
+                    friendsListHTML += renderFriend(friend);
+                }
+            }
+            $('#FriendsShower').html(friendsListHTML);
+            resetDeleteFriend();
+        }
+    })
 }
 
 function renderPendingFriend(pendingFriend) {
@@ -168,3 +191,68 @@ function renderPendingFriend(pendingFriend) {
         `</div>` +
         `</div>`;
 }
+
+function renderFriend(friend) {
+    return `<div>` +
+        `<div class="messageTest" id="name${friend.friendsListId}">${friend.user1UN}` +
+        `<button class="deleteFriend" data-friend-friendListId="${friend.friendsListId}">` +
+        `Delete Friend` +
+        `</button>` +
+        `</div>` +
+        `</div>`;
+}
+
+function resetDeletePendingFriend() {
+    $('.deletePendingFriend').click(event => {
+        const pendingFriendId = $(event.target).attr('data-pendingFriend-friendListId');
+        $.ajax({
+            url: '/friendsList/pendingDelete',
+            type: 'POST',
+            data: {"pendingFriendId": pendingFriendId},
+            success: response => {
+                if (response === 'OK') {
+                    pageLoad();
+                } else {
+                    alert(response);
+                }
+            }
+        });
+    });
+}
+
+function resetDeleteFriend() {
+    $('.deleteFriend').click(event => {
+        const friendId = $(event.target).attr('data-friend-friendListId');
+        $.ajax({
+            url: '/friendsList/delete',
+            type: 'POST',
+            data: {"friendId": friendId},
+            success: response => {
+                if (response === 'OK') {
+                    pageLoad();
+                } else {
+                    alert(response);
+                }
+            }
+        });
+    });
+}
+
+function resetAcceptPendingFriend() {
+    $('.acceptPendingFriend').click(event => {
+        const pendingFriendId = $(event.target).attr('data-pendingFriend-friendListId');
+        $.ajax({
+            url: '/friendsList/pendingAccept',
+            type: 'POST',
+            data: {"pendingFriendId": pendingFriendId},
+            success: response => {
+                if (response === 'OK') {
+                    pageLoad();
+                } else {
+                    alert(response);
+                }
+            }
+        });
+    });
+}
+

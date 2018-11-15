@@ -49,9 +49,9 @@ public class FriendsListController {
 
         for (FriendsList fl: FriendsList.friendslists) {
             if (fl.getUser() == creator && fl.getUser2() == addedFriend) {
-                return "Error you are already friends";
+                return "Error: you are already friends";
             }else if (fl.getUser() == addedFriend && fl.getUser2() == creator){
-                return "Error you are already friends";
+                return "Error: you are already friends";
             }
         }
 
@@ -67,10 +67,13 @@ public class FriendsListController {
 
 
     @SuppressWarnings("unchecked")
-    private String getFriendsList() {
+    private String getFriendsList(int cUser) {
         JSONArray friendsListList = new JSONArray();
         for (FriendsList fl: FriendsList.friendslists) {
-            friendsListList.add(fl.toJSON());
+            if(fl.getPending()==0) {
+                if(fl.getUser2()==cUser || fl.getUser()==cUser)
+                    friendsListList.add(fl.toJSON());
+            }
         }
         return friendsListList.toString();
     }
@@ -79,18 +82,51 @@ public class FriendsListController {
     @Produces (MediaType.APPLICATION_JSON)
     public String listFriends(@CookieParam("sessionToken") Cookie sessionCookie) {
 
-        if (UserService.validateSessionCookie(sessionCookie) == null) {
+        int cookieUser = 0;
+        String cookieUserName = UserService.validateSessionCookie(sessionCookie);
+        if (cookieUserName == null) {
             return "Error: Invalid user session token";
+        } else {
+            UserService.selectAllInto(User.users);
+            for (User u: User.users) {
+                if (u.getName().toLowerCase().equals(cookieUserName.toLowerCase())) {
+                    cookieUser = u.getId();
+                }
+            }
         }
 
         Console.log("/friendsList/list - Getting all friends from the database");
         String status = FriendsListService.selectAllInto(FriendsList.friendslists);
         if (status.equals("OK")){
-            return getFriendsList();
+            return getFriendsList(cookieUser);
         }else{
             JSONObject response = new JSONObject();
             response.put("error", status);
             return response.toString();
+        }
+    }
+
+    @POST
+    @Path("delete")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String deleteFriend(@FormParam("friendId") int friendId,
+                                      @CookieParam("sessionToken") Cookie sessionCookie) {
+        String currentUsername = UserService.validateSessionCookie(sessionCookie);
+        if (currentUsername == null) return "Error: Invalid user session token";
+
+        Console.log("/friendsList/pendingDelete - friendsListId: " + friendId);
+        FriendsList friend = FriendsListService.selectById(friendId);
+        if (friend == null) {
+            return "This entry in friendsList doesn't exist";
+        } else {
+            if (!friend.getUser2UN().equals(currentUsername)) {
+                return "That's not your friend to delete";
+            } else if (!friend.getUser1UN().equals(currentUsername)) {
+                return "That's not your friend to delete";
+            }else{
+                return FriendsListService.deleteById(friendId);
+            }
         }
     }
 
@@ -135,5 +171,50 @@ public class FriendsListController {
             response.put("error", status);
             return response.toString();
         }
+    }
+
+
+    @POST
+    @Path("pendingDelete")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String deletePendingFriend(@FormParam("pendingFriendId") int pendingFriendId,
+                                @CookieParam("sessionToken") Cookie sessionCookie) {
+        String currentUsername = UserService.validateSessionCookie(sessionCookie);
+        if (currentUsername == null) return "Error: Invalid user session token";
+
+        Console.log("/friendsList/pendingDelete - friendsListId: " + pendingFriendId);
+        FriendsList pendingFriend = FriendsListService.selectById(pendingFriendId);
+        if (pendingFriend == null) {
+            return "This entry in friendsList doesn't exist";
+        } else {
+            if (!pendingFriend.getUser2UN().equals(currentUsername)) {
+                return "That's not your friend to delete";
+            }
+            return FriendsListService.deleteById(pendingFriendId);
+        }
+    }
+
+    @POST
+    @Path("pendingAccept")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String acceptPendingFriend (@FormParam("pendingFriendId") int pendingFriendId,
+                                @CookieParam("sessionToken") Cookie sessionCookie) {
+        String currentUsername = UserService.validateSessionCookie(sessionCookie);
+        if (currentUsername == null) return "Error: Invalid user session token";
+
+        Console.log("/friendsList/pendingAccept - friendsListId: " + pendingFriendId);
+        FriendsList pendingFriend = FriendsListService.selectById(pendingFriendId);
+        if (pendingFriend == null) {
+            return "This entry in friendsList doesn't exist";
+        } else {
+            if (!pendingFriend.getUser2UN().equals(currentUsername)) {
+                return "That's not your friend to delete";
+            }
+            pendingFriend.setPending(0);
+            return FriendsListService.update(pendingFriend);
+        }
+
     }
 }
