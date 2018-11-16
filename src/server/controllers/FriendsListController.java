@@ -71,8 +71,11 @@ public class FriendsListController {
         JSONArray friendsListList = new JSONArray();
         for (FriendsList fl: FriendsList.friendslists) {
             if(fl.getPending()==0) {
-                if(fl.getUser2()==cUser || fl.getUser()==cUser)
-                    friendsListList.add(fl.toJSON());
+                if(fl.getUser2()==cUser) {
+                    friendsListList.add(fl.toJSON(fl.getUser1UN()));
+                } else if(fl.getUser()==cUser){
+                    friendsListList.add(fl.toJSON(fl.getUser2UN()));
+                }
             }
         }
         return friendsListList.toString();
@@ -138,7 +141,7 @@ public class FriendsListController {
             for (FriendsList fl: FriendsList.friendslists) {
                 if(fl.getPending()==1) {
                     if(fl.getUser2()==cUser)
-                        friendsListList.add(fl.toJSON());
+                        friendsListList.add(fl.toJSON(""));
                 }
             }
         return friendsListList.toString();

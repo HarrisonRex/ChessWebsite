@@ -161,7 +161,7 @@ function loadPendingFriendsList() {
 }
 
 function loadFriendsList() {
-    let friendsListHTML;
+    let friendsListHTML = '';
     $.ajax({
         url: '/friendsList/list',
         type: 'GET',
@@ -181,7 +181,7 @@ function loadFriendsList() {
 
 function renderPendingFriend(pendingFriend) {
     return `<div>` +
-        `<div class="messageTest" id="name${pendingFriend.friendsListId}">${pendingFriend.user1UN}` +
+        `<div class="pendingFriendName" id="name${pendingFriend.friendsListId}">${pendingFriend.user1UN}` +
         `<button class="acceptPendingFriend" data-pendingFriend-friendListId="${pendingFriend.friendsListId}">` +
         `Accept` +
         `</button>` +
@@ -194,7 +194,7 @@ function renderPendingFriend(pendingFriend) {
 
 function renderFriend(friend) {
     return `<div>` +
-        `<div class="messageTest" id="name${friend.friendsListId}">${friend.user1UN}` +
+        `<div class="friendName" id="name${friend.friendsListId}">${friend.otherUser}` +
         `<button class="deleteFriend" data-friend-friendListId="${friend.friendsListId}">` +
         `Delete Friend` +
         `</button>` +
