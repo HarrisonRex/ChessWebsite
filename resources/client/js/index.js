@@ -4,8 +4,6 @@ function pageLoad() {
     resetNewFriendForm();
     loadPendingFriendsList();
     loadFriendsList();
-    resetDeletePendingFriend();
-    resetDeleteFriend();
     $("#gameMaker").hide();
     $("#newFriend").hide();
 }
@@ -150,47 +148,16 @@ function loadPendingFriendsList() {
             if(pendingFriendsListList.hasOwnProperty('error')) {
                 alert(pendingFriendsListList.error);
             }else{
-                pendingFriendsListHTML += "Pending Friend Requests:"
+                pendingFriendsListHTML = "Pending Friend Requests:"
                 for (let pendingFriend of pendingFriendsListList) {
                     pendingFriendsListHTML += renderPendingFriend(pendingFriend);
                 }
             }
             $('#pendingFriendsShower').html(pendingFriendsListHTML);
             resetDeletePendingFriend();
+            resetAcceptPendingFriend();
         }
         })
-}
-
-function renderPendingFriend(pendingFriend) {
-    return `<div>` +
-        `<div class="messageTest" id="name${pendingFriend.friendsListId}">${pendingFriend.user1UN}` +
-        `<button class="acceptPendingFriend" data-pendingFriend-friendListId="${pendingFriend.friendsListId}">` +
-        `Accept` +
-        `</button>` +
-        `<button class="deletePendingFriend" id="deletePendingFriend" data-pendingFriend-friendListId="${pendingFriend.friendsListId}">` +
-        `Reject` +
-        `</button>` +
-        `</div>` +
-        `</div>`;
-}
-
-function resetDeletePendingFriend () {
-    $("#deletePendingFriend").click(event => {
-        const pendingFriendId = $(event.target).attr('data-pendingFriend-friendListId');
-
-        $.ajax({
-            url: '/friendsList/pendingDelete',
-            type: 'POST',
-            data: {"pendingFriendId": pendingFriendId},
-            success: response => {
-                if (response == 'OK'){
-                    pageLoad();
-                }else{
-                    alert(response);
-                }
-            }
-        })
-    })
 }
 
 function loadFriendsList() {
@@ -206,14 +173,28 @@ function loadFriendsList() {
                     friendsListHTML += renderFriend(friend);
                 }
             }
-            $('#friendsShower').html(friendsListHTML);
+            $('#FriendsShower').html(friendsListHTML);
+            resetDeleteFriend();
         }
     })
 }
 
+function renderPendingFriend(pendingFriend) {
+    return `<div>` +
+        `<div class="pendingFriendName" id="name${pendingFriend.friendsListId}">${pendingFriend.user1UN}` +
+        `<button class="acceptPendingFriend" data-pendingFriend-friendListId="${pendingFriend.friendsListId}">` +
+        `Accept` +
+        `</button>` +
+        `<button class="deletePendingFriend" data-pendingFriend-friendListId="${pendingFriend.friendsListId}">` +
+        `Reject` +
+        `</button>` +
+        `</div>` +
+        `</div>`;
+}
+
 function renderFriend(friend) {
     return `<div>` +
-        `<div class="messageTest" id="name${friend.friendsListId}">${friend.user1UN}` +
+        `<div class="friendName" id="name${friend.friendsListId}">${friend.otherUser}` +
         `<button class="deleteFriend" data-friend-friendListId="${friend.friendsListId}">` +
         `Delete Friend` +
         `</button>` +
@@ -221,21 +202,57 @@ function renderFriend(friend) {
         `</div>`;
 }
 
-function resetDeleteFriend () {
+function resetDeletePendingFriend() {
+    $('.deletePendingFriend').click(event => {
+        const pendingFriendId = $(event.target).attr('data-pendingFriend-friendListId');
+        $.ajax({
+            url: '/friendsList/pendingDelete',
+            type: 'POST',
+            data: {"pendingFriendId": pendingFriendId},
+            success: response => {
+                if (response === 'OK') {
+                    pageLoad();
+                } else {
+                    alert(response);
+                }
+            }
+        });
+    });
+}
+
+function resetDeleteFriend() {
     $('.deleteFriend').click(event => {
         const friendId = $(event.target).attr('data-friend-friendListId');
-
         $.ajax({
             url: '/friendsList/delete',
             type: 'POST',
             data: {"friendId": friendId},
             success: response => {
-                if (response == 'OK'){
+                if (response === 'OK') {
                     pageLoad();
-                }else{
+                } else {
                     alert(response);
                 }
             }
-        })
-    })
+        });
+    });
 }
+
+function resetAcceptPendingFriend() {
+    $('.acceptPendingFriend').click(event => {
+        const pendingFriendId = $(event.target).attr('data-pendingFriend-friendListId');
+        $.ajax({
+            url: '/friendsList/pendingAccept',
+            type: 'POST',
+            data: {"pendingFriendId": pendingFriendId},
+            success: response => {
+                if (response === 'OK') {
+                    pageLoad();
+                } else {
+                    alert(response);
+                }
+            }
+        });
+    });
+}
+

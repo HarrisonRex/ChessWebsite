@@ -84,7 +84,7 @@ public class FriendsList {
     }
 
     @SuppressWarnings("unchecked")
-    public JSONObject toJSON() {
+    public JSONObject toJSON(String oUser) {
         JSONObject j = new JSONObject();
         j.put("friendsListId", getFriendsListId());
         j.put("user", getUser());
@@ -92,6 +92,7 @@ public class FriendsList {
         j.put("pending", getPending());
         j.put("user1UN", getUser1UN());
         j.put("user2UN", getUser2UN());
+        j.put("otherUser", oUser);
         return j;
     }
 }
