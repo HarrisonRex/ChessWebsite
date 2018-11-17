@@ -14,6 +14,8 @@ import server.models.services.UserService;
 @Path("friendsList/")
 public class FriendsListController {
 
+
+
     @POST
     @Path("new")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -54,7 +56,6 @@ public class FriendsListController {
                 return "Error: you are already friends";
             }
         }
-
         Console.log("Adding " + friendUN + " as a friend for " + maker);
         String success = FriendsListService.insert(new FriendsList(flID, creator, addedFriend, 1, maker, friendUN));
 
@@ -97,17 +98,60 @@ public class FriendsListController {
                 }
             }
         }
-
         Console.log("/friendsList/list - Getting all friends from the database");
         String status = FriendsListService.selectAllInto(FriendsList.friendslists);
         if (status.equals("OK")){
-            return getFriendsList(cookieUser);
+            String endFriendList = getFriendsList(cookieUser);
+            if (endFriendList.equals("[]")){
+                JSONObject eCheck = new JSONObject();
+                eCheck.put("empty", "empty");
+                return eCheck.toString();
+            } else {
+                return endFriendList;
+            }
         }else{
             JSONObject response = new JSONObject();
             response.put("error", status);
             return response.toString();
         }
     }
+
+
+
+    @GET
+    @Path("loadOpoDD")
+    @Produces (MediaType.APPLICATION_JSON)
+    public String loadOpoDD(@CookieParam("sessionToken") Cookie sessionCookie) {
+
+        int cookieUser = 0;
+        String cookieUserName = UserService.validateSessionCookie(sessionCookie);
+        if (cookieUserName == null) {
+            return "Error: Invalid user session token";
+        } else {
+            UserService.selectAllInto(User.users);
+            for (User u: User.users) {
+                if (u.getName().toLowerCase().equals(cookieUserName.toLowerCase())) {
+                    cookieUser = u.getId();
+                }
+            }
+        }
+        String status = FriendsListService.selectAllInto((FriendsList.friendslists));
+        if(status.equals("OK")){
+            String endDD = getFriendsList(cookieUser);
+            if (endDD.equals("[]")){
+                JSONObject eCheck = new JSONObject();
+                eCheck.put("empty", "empty");
+                return eCheck.toString();
+            } else {
+                return endDD;
+            }
+        }else{
+            JSONObject response = new JSONObject();
+            response.put("error", status);
+            return response.toString();
+        }
+    }
+
 
     @POST
     @Path("delete")
@@ -118,7 +162,7 @@ public class FriendsListController {
         String currentUsername = UserService.validateSessionCookie(sessionCookie);
         if (currentUsername == null) return "Error: Invalid user session token";
 
-        Console.log("/friendsList/pendingDelete - friendsListId: " + friendId);
+        Console.log("/friendsList/delete of friendsListId: " + friendId);
         FriendsList friend = FriendsListService.selectById(friendId);
         if (friend == null) {
             return "This entry in friendsList doesn't exist";
@@ -138,12 +182,13 @@ public class FriendsListController {
     @SuppressWarnings("unchecked")
     private String getPendingFriendsList(int cUser) {
         JSONArray friendsListList = new JSONArray();
-            for (FriendsList fl: FriendsList.friendslists) {
-                if(fl.getPending()==1) {
-                    if(fl.getUser2()==cUser)
-                        friendsListList.add(fl.toJSON(""));
+        for (FriendsList fl: FriendsList.friendslists) {
+            if(fl.getPending()==1) {
+                if(fl.getUser2()==cUser) {
+                    friendsListList.add(fl.toJSON(""));
                 }
             }
+        }
         return friendsListList.toString();
     }
     @GET
@@ -163,18 +208,24 @@ public class FriendsListController {
                 }
             }
         }
-
-
         Console.log("/friendsList/list - Getting all friends from the database");
         String status = FriendsListService.selectAllInto(FriendsList.friendslists);
         if (status.equals("OK")){
-            return getPendingFriendsList(cookieUser);
+            String endPendingList = getPendingFriendsList(cookieUser);
+            if (endPendingList.equals("[]")){
+                JSONObject ePendCheck = new JSONObject();
+                ePendCheck.put("empty", "empty");
+                return ePendCheck.toString();
+            } else {
+                return endPendingList;
+            }
         }else{
             JSONObject response = new JSONObject();
             response.put("error", status);
             return response.toString();
         }
     }
+
 
 
     @POST
@@ -186,7 +237,7 @@ public class FriendsListController {
         String currentUsername = UserService.validateSessionCookie(sessionCookie);
         if (currentUsername == null) return "Error: Invalid user session token";
 
-        Console.log("/friendsList/pendingDelete - friendsListId: " + pendingFriendId);
+        Console.log("/friendsList/pendingDelete of friendsListId: " + pendingFriendId);
         FriendsList pendingFriend = FriendsListService.selectById(pendingFriendId);
         if (pendingFriend == null) {
             return "This entry in friendsList doesn't exist";
@@ -197,6 +248,8 @@ public class FriendsListController {
             return FriendsListService.deleteById(pendingFriendId);
         }
     }
+
+
 
     @POST
     @Path("pendingAccept")

@@ -1,7 +1,7 @@
 function pageLoad() {
     checkLogin();
-    resetNewGameForm();
     resetNewFriendForm();
+    loadNewGameOpoDropDown();
     loadPendingFriendsList();
     loadFriendsList();
     $("#gameMaker").hide();
@@ -148,9 +148,11 @@ function loadPendingFriendsList() {
             if(pendingFriendsListList.hasOwnProperty('error')) {
                 alert(pendingFriendsListList.error);
             }else{
-                pendingFriendsListHTML = "Pending Friend Requests:"
-                for (let pendingFriend of pendingFriendsListList) {
-                    pendingFriendsListHTML += renderPendingFriend(pendingFriend);
+                if (!pendingFriendsListList.hasOwnProperty('empty')) {
+                    pendingFriendsListHTML = "Pending Friend Requests:"
+                    for (let pendingFriend of pendingFriendsListList) {
+                        pendingFriendsListHTML += renderPendingFriend(pendingFriend);
+                    }
                 }
             }
             $('#pendingFriendsShower').html(pendingFriendsListHTML);
@@ -169,8 +171,11 @@ function loadFriendsList() {
             if(friendsListList.hasOwnProperty('error')) {
                 alert(friendsListList.error);
             }else{
-                for (let friend of friendsListList) {
-                    friendsListHTML += renderFriend(friend);
+                if(!friendsListList.hasOwnProperty('empty')) {
+                    friendsListHTML += "Friends:"
+                    for (let friend of friendsListList) {
+                        friendsListHTML += renderFriend(friend);
+                    }
                 }
             }
             $('#FriendsShower').html(friendsListHTML);
@@ -254,5 +259,29 @@ function resetAcceptPendingFriend() {
             }
         });
     });
+}
+
+function loadNewGameOpoDropDown() {
+    let newGameOpoHTML = '';
+    $.ajax({
+        url: '/friendsList/loadOpoDD',
+        type: 'GET',
+        success: newGameOpoList => {
+            if(newGameOpoList.hasOwnProperty('error')) {
+                alert(newGameOpoList.error);
+            }else{
+                for (let opo of newGameOpoList) {
+                    newGameOpoHTML += renderNewGameOpoDropDownOption(opo);
+                }
+            }
+            $('#newGameOpoDropDown').html(newGameOpoHTML);
+            resetNewGameForm();
+        }
+    })
+}
+
+function renderNewGameOpoDropDownOption(opoOpt) {
+    return `<option class="newGameOpoOption" id="opo${opoOpt.friendsListid}" value="${opoOpt.otherUser}" }>${opoOpt.otherUser}` +
+        `</option>`;
 }
 
