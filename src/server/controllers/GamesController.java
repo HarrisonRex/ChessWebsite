@@ -1,5 +1,6 @@
 package server.controllers;
 
+import org.json.simple.JSONArray;
 import server.Console;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -64,5 +65,41 @@ public class GamesController {
             return "Error: Can't create new game.";
         }
         return success;
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private String getGamesList(int cUser) {
+        JSONArray gamesList  = new JSONArray();
+        for (Games g: Games.gamess) {
+            if(g.getOwner()==cUser){
+                gamesList.add(g.toJSON());
+            }else if(g.getPlayer2()==cUser){
+                gamesList.add(g.toJSON());
+            }
+        }
+        return gamesList.toString();
+    }
+    @GET
+    @Path("list")
+    @Produces (MediaType.APPLICATION_JSON)
+    public String listGames(@CookieParam("sessionToken") Cookie sessionCookie) {
+        int cookieUser = 0;
+        String cookieUserName = UserService.validateSessionCookie(sessionCookie);
+        if (cookieUserName == null) {
+            return "Error: Invalid user session token";
+        } else {
+            UserService.selectAllInto(User.users);
+            for (User u: User.users) {
+                if (u.getName().toLowerCase().equals(cookieUserName.toLowerCase())) {
+                    cookieUser = u.getId();
+                }
+            }
+        }
+        Console.log("/games/list - Getting all games from the database");
+        String status = GamesService.selectAllInto(Games.gamess);
+        if (status.equals("OK")){
+            String gamesList = getGamesList(cookieUser);
+        }
     }
 }
