@@ -101,5 +101,8 @@ public class GamesController {
         if (status.equals("OK")){
             String gamesList = getGamesList(cookieUser);
         }
+
+
+        return "";
     }
 }
