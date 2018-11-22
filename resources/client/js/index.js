@@ -4,6 +4,7 @@ function pageLoad() {
     loadNewGameOpoDropDown();
     loadPendingFriendsList();
     loadFriendsList();
+    loadGames();
     $("#gameMaker").hide();
     $("#newFriend").hide();
 }
@@ -283,5 +284,30 @@ function loadNewGameOpoDropDown() {
 function renderNewGameOpoDropDownOption(opoOpt) {
     return `<option class="newGameOpoOption" id="opo${opoOpt.friendsListid}" value="${opoOpt.otherUser}" }>${opoOpt.otherUser}` +
         `</option>`;
+}
+
+function loadGames() {
+    let showGamesHTML ='';
+    $.ajax({
+        url: '/games/list',
+        type: 'GET',
+        success: showGamesList => {
+            if(showGamesList.hasOwnProperty('error')) {
+                alert(showGamesList.error);
+            }else{
+                for (let game of showGamesList) {
+                    showGamesHTML += renderGame(game);
+                }
+            }
+            $('#GamesShower').html(showGamesHTML);
+        }
+    })
+}
+
+function renderGame(game) {
+    return `<div>` +
+        `<div class="gameOpoName" id="name${game.gameId}"${game.otherPlayer}` +
+        `</div>` +
+        `</div>`;
 }
 

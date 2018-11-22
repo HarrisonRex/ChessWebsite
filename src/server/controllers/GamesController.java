@@ -1,6 +1,7 @@
 package server.controllers;
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import server.Console;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -9,6 +10,8 @@ import server.models.Games;
 import server.models.services.GamesService;
 import server.models.User;
 import server.models.services.UserService;
+
+import java.util.ArrayList;
 
 @Path("games/")
 public class GamesController {
@@ -70,12 +73,24 @@ public class GamesController {
 
     @SuppressWarnings("unchecked")
     private String getGamesList(int cUser) {
+
+        ArrayList<Integer> usersGames = new ArrayList<>();
+        for (Games g: Games.gamess){
+            if (g.getOwner()==cUser){
+                usersGames.add(g.getPlayer2());
+            }else if (g.getPlayer2()==cUser){
+                usersGames.add(g.getOwner());
+            }
+        }
+
         JSONArray gamesList  = new JSONArray();
         for (Games g: Games.gamess) {
-            if(g.getOwner()==cUser){
-                gamesList.add(g.toJSON());
-            }else if(g.getPlayer2()==cUser){
-                gamesList.add(g.toJSON());
+            for (int x=0;x<=usersGames.size(); x++) {
+                for (User u : User.users) {
+                    if(usersGames.get(x)==u.getId()){
+                        gamesList.add(g.toJSON(u.getName()));
+                    }
+                }
             }
         }
         return gamesList.toString();
@@ -96,13 +111,22 @@ public class GamesController {
                 }
             }
         }
+
         Console.log("/games/list - Getting all games from the database");
         String status = GamesService.selectAllInto(Games.gamess);
         if (status.equals("OK")){
             String gamesList = getGamesList(cookieUser);
+            if(gamesList.equals("[]")){
+                JSONObject eCheck = new JSONObject();
+                eCheck.put("empty", "empty");
+                return eCheck.toString();
+            } else {
+                return gamesList;
+            }
+        } else {
+            JSONObject response = new JSONObject();
+            response.put("error", status);
+            return response.toString();
         }
-
-
-        return "";
     }
 }

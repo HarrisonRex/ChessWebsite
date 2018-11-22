@@ -20,14 +20,14 @@ public class Games {
     }
 
     @SuppressWarnings("unchecked")
-    public JSONObject toJSON() {
+    public JSONObject toJSON(String oPlayerUN) {
         JSONObject j = new JSONObject();
         j.put("gameId", getGameId());
         j.put("owner", getOwner());
         j.put("player2", getPlayer2());
         j.put("ownerWhite", getOwnerWhite());
         j.put("moveHistory", getMoveHistory());
-
+        j.put("otherPlayer", oPlayerUN);
 
         return j;
     }
