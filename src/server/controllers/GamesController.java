@@ -74,6 +74,10 @@ public class GamesController {
     @SuppressWarnings("unchecked")
     private String getGamesList(int cUser) {
 
+
+        JSONArray gamesList  = new JSONArray();
+
+        /*
         ArrayList<Integer> usersGames = new ArrayList<>();
         for (Games g: Games.gamess){
             if (g.getOwner()==cUser){
@@ -82,16 +86,20 @@ public class GamesController {
                 usersGames.add(g.getOwner());
             }
         }
+        */
 
-        JSONArray gamesList  = new JSONArray();
         for (Games g: Games.gamess) {
-            for (int x=0;x<=usersGames.size(); x++) {
+            //for (int x=0;x<usersGames.size(); x++) {
                 for (User u : User.users) {
-                    if(usersGames.get(x)==u.getId()){
-                        gamesList.add(g.toJSON(u.getName()));
+                    if(g.getOwner()==u.getId() || g.getPlayer2()==u.getId()){
+                        if(g.getOwner()==cUser) {
+                            gamesList.add(g.toJSON(u.getName()));
+                        }else if(g.getPlayer2()==cUser){
+                            gamesList.add(g.toJSON(u.getName()));
+                        }
                     }
                 }
-            }
+            //}
         }
         return gamesList.toString();
     }

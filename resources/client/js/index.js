@@ -306,7 +306,7 @@ function loadGames() {
 
 function renderGame(game) {
     return `<div>` +
-        `<div class="gameOpoName" id="name${game.gameId}"${game.otherPlayer}` +
+        `<div class="gameOpoName" id="name${game.gameId}"> Against: ${game.otherPlayer}` +
         `</div>` +
         `</div>`;
 }
