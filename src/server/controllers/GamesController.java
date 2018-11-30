@@ -86,7 +86,7 @@ public class GamesController {
                 usersGames.add(g.getOwner());
             }
         }
-        */
+
 
         for (Games g: Games.gamess) {
             //for (int x=0;x<usersGames.size(); x++) {
@@ -100,6 +100,23 @@ public class GamesController {
                     }
                 }
             //}
+        }
+        */
+
+        for (Games g: Games.gamess) {
+            if (g.getOwner() == cUser) {
+                for (User u : User.users) {
+                    if (u.getId() == g.getPlayer2()) {
+                        gamesList.add(g.toJSON(u.getName()));
+                    }
+                }
+            } else if (g.getPlayer2() == cUser) {
+                for (User u : User.users) {
+                    if (u.getId() == g.getOwner()) {
+                        gamesList.add(g.toJSON(u.getName()));
+                    }
+                }
+            }
         }
         return gamesList.toString();
     }
