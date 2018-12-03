@@ -115,6 +115,7 @@ function resetNewGameForm(){
                 alert(response);
             }else{
                 $("#gameMaker").hide();
+                pageLoad();
             }
         }
         })
@@ -295,8 +296,16 @@ function loadGames() {
             if(showGamesList.hasOwnProperty('error')) {
                 alert(showGamesList.error);
             }else{
+                let colour = "";
                 for (let game of showGamesList) {
-                    showGamesHTML += renderGame(game);
+
+                    if(game.ownerWhite==1){
+                        colour = "White";
+                    }else{
+                        colour = "Black";
+                    }
+
+                    showGamesHTML += renderGame(game, colour);
                 }
             }
             $('#GamesShower').html(showGamesHTML);
@@ -304,10 +313,16 @@ function loadGames() {
     })
 }
 
-function renderGame(game) {
+function renderGame(game, colour) {
     return `<div>` +
-        `<div class="gameOpoName" id="name${game.gameId}"> Against: ${game.otherPlayer}` +
-        `</div>` +
+        `<input type="radio" name="gameSelectRad" value="${game.gameId}" class="gameOpoName" id="name${game.gameId}">` +
+        `Against: ` + game.otherPlayer +
+        `, you are playing as ` + colour +
+        `, game id:` + game.gameId +
+        `</input>` +
         `</div>`;
 }
 
+function getGameRadioId() {
+    return $("input[name='gameSelectRad']:checked").val();
+}
