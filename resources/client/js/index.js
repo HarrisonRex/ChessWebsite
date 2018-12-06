@@ -289,6 +289,7 @@ function renderNewGameOpoDropDownOption(opoOpt) {
 
 function loadGames() {
     let showGamesHTML ='';
+    let currentSelect = getGameRadioId();
     $.ajax({
         url: '/games/list',
         type: 'GET',
@@ -297,6 +298,7 @@ function loadGames() {
                 alert(showGamesList.error);
             }else{
                 let colour = "";
+
                 for (let game of showGamesList) {
 
                     if(game.ownerWhite==1){
@@ -305,17 +307,23 @@ function loadGames() {
                         colour = "Black";
                     }
 
-                    showGamesHTML += renderGame(game, colour);
+                    showGamesHTML += renderCurrentGameRadio(game, colour);
                 }
             }
             $('#GamesShower').html(showGamesHTML);
+
+            for (let game of showGamesList){
+                if(game.gameId==currentSelect){
+                    selectGameRadioButtonChecker("gameSelectRad", game.gameId);
+                }
+            }
         }
     })
 }
 
-function renderGame(game, colour) {
+function renderCurrentGameRadio(game, colour) {
     return `<div>` +
-        `<input type="radio" name="gameSelectRad" value="${game.gameId}" class="gameOpoName" id="name${game.gameId}">` +
+        `<input type="radio" name="gameSelectRad" value="${game.gameId}" class="gameOpoName" onchange="renderSavedGameState()" id="name${game.gameId}">` +
         `Against: ` + game.otherPlayer +
         `, you are playing as ` + colour +
         `, game id:` + game.gameId +
@@ -325,4 +333,13 @@ function renderGame(game, colour) {
 
 function getGameRadioId() {
     return $("input[name='gameSelectRad']:checked").val();
+}
+
+function selectGameRadioButtonChecker(name, value) {
+    $("input[name='"+name+"'][value='"+value+"']").prop('checked', true);
+    return false;
+}
+
+function renderSavedGameState() {
+    //alert("Im a test for " + getGameRadioId())
 }

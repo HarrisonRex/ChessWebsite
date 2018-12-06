@@ -142,9 +142,11 @@
         </div>
         <div id="userRecon"></div>
         <button id="logout">Log out</button>
-        <button id="Chesser" onclick="boardSetChess()">Set a chess board</button>
         <button id="showNewGame" onclick="$(&quot#gameMaker&quot).show(500);">Make a new game</button>
         <button id="showNewFriend" onclick="$(&quot#newFriend&quot).show(500);">Add a new friend</button>
+        <button id="Chesser" onclick="boardSetChess()">Set a chess board</button>
+        <button onclick="pageLoad()">Load Page</button>
+
         <div id="gameMaker">
             Create new game:
             <form id="newGameForm">
@@ -166,10 +168,10 @@
                 <Button>Add</Button>
             </form>
         </div>
+        <p></p>
         <div id="FriendsShower">You have no friends yet :(</div>
         <p></p>
-        <div>Current Game:</div>
+        <div id="cG">Current Game:</div>
         <div id="GamesShower">You currently have no games</div>
-    Tester(ignore)
     </body>
 </html>

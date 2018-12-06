@@ -51,9 +51,17 @@ public class FriendsListController {
 
         for (FriendsList fl: FriendsList.friendslists) {
             if (fl.getUser() == creator && fl.getUser2() == addedFriend) {
-                return "Error: you are already friends";
+                if(fl.getPending()==1){
+                    return "Error: Friend request pending";
+                }else {
+                    return "Error: you are already friends";
+                }
             }else if (fl.getUser() == addedFriend && fl.getUser2() == creator){
-                return "Error: you are already friends";
+                if(fl.getPending()==1){
+                    return "Error: Friend request pending";
+                }else {
+                    return "Error: you are already friends";
+                }
             }
         }
         Console.log("Adding " + friendUN + " as a friend for " + maker);
