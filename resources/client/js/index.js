@@ -341,5 +341,5 @@ function selectGameRadioButtonChecker(name, value) {
 }
 
 function renderSavedGameState() {
-    //alert("Im a test for " + getGameRadioId())
+    //alert("Im a test for " + getGameRadioId());
 }
