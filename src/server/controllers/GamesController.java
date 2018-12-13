@@ -15,6 +15,8 @@ import java.util.ArrayList;
 
 @Path("games/")
 public class GamesController {
+
+    //Response from the server for making a new game
     @POST
     @Path("new")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -52,9 +54,8 @@ public class GamesController {
 
         if (ownWhite==1){
             whoWhite = 1;
-        }else if (ownWhite!=1){
-            whoWhite = 0;
         }
+
         int gId = Games.nextId();
         if(whoWhite==1){
             log = "Creating new game with " + maker + " as white VS " + player2UN + " as black.";
@@ -70,38 +71,11 @@ public class GamesController {
         return success;
     }
 
-
+    //The list user to show all the games to the user
     @SuppressWarnings("unchecked")
     private String getGamesList(int cUser) {
 
-
         JSONArray gamesList  = new JSONArray();
-
-        /*
-        ArrayList<Integer> usersGames = new ArrayList<>();
-        for (Games g: Games.gamess){
-            if (g.getOwner()==cUser){
-                usersGames.add(g.getPlayer2());
-            }else if (g.getPlayer2()==cUser){
-                usersGames.add(g.getOwner());
-            }
-        }
-
-
-        for (Games g: Games.gamess) {
-            //for (int x=0;x<usersGames.size(); x++) {
-                for (User u : User.users) {
-                    if(g.getOwner()==u.getId() || g.getPlayer2()==u.getId()){
-                        if(g.getOwner()==cUser) {
-                            gamesList.add(g.toJSON(u.getName()));
-                        }else if(g.getPlayer2()==cUser){
-                            gamesList.add(g.toJSON(u.getName()));
-                        }
-                    }
-                }
-            //}
-        }
-        */
 
         for (Games g: Games.gamess) {
             if (g.getOwner() == cUser) {
@@ -120,6 +94,8 @@ public class GamesController {
         }
         return gamesList.toString();
     }
+
+    //The servers response and gathering of all games related to the user
     @GET
     @Path("list")
     @Produces (MediaType.APPLICATION_JSON)
@@ -152,6 +128,41 @@ public class GamesController {
             JSONObject response = new JSONObject();
             response.put("error", status);
             return response.toString();
+        }
+    }
+
+    @POST
+    @Path("delete")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String deleteFriend(@FormParam("gameId") int gameId,
+                               @CookieParam("sessionToken") Cookie sessionCookie) {
+
+        int cookieUser = 0;
+        String cookieUserName = UserService.validateSessionCookie(sessionCookie);
+        if (cookieUserName == null) {
+            return "Error: Invalid user session token";
+        } else {
+            UserService.selectAllInto(User.users);
+            for (User u: User.users) {
+                if (u.getName().toLowerCase().equals(cookieUserName.toLowerCase())) {
+                    cookieUser = u.getId();
+                }
+            }
+        }
+
+        Console.log("/friendsList/delete of friendsListId: " + gameId);
+        Games game = GamesService.selectById(gameId);
+        if (game == null) {
+            return "This game doesn't exist";
+        } else {
+            if (game.getOwner()==(cookieUser)) {
+                return GamesService.deleteById(gameId);
+            } else if (game.getPlayer2()==(cookieUser)) {
+                return GamesService.deleteById(gameId);
+            }else{
+                return "That's not your game to delete";
+            }
         }
     }
 }

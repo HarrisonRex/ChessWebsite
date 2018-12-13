@@ -166,14 +166,14 @@ public class FriendsListController {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_PLAIN)
     public String deleteFriend(@FormParam("friendId") int friendId,
-                                      @CookieParam("sessionToken") Cookie sessionCookie) {
+                               @CookieParam("sessionToken") Cookie sessionCookie) {
         String currentUsername = UserService.validateSessionCookie(sessionCookie);
         if (currentUsername == null) return "Error: Invalid user session token";
 
         Console.log("/friendsList/delete of friendsListId: " + friendId);
         FriendsList friend = FriendsListService.selectById(friendId);
         if (friend == null) {
-            return "This entry in friendsList doesn't exist";
+            return "This friendsList entry doesn't exist";
         } else {
             if (friend.getUser2UN().equals(currentUsername)) {
                 return FriendsListService.deleteById(friendId);

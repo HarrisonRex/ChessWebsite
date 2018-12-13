@@ -3,6 +3,7 @@ function pageLoad() {
     resetNewUserForm();
 }
 
+//The form for loging in a existing user
 function resetLoginForm() {
     const loginForm = $('#loginForm');
     loginForm.submit(event => {
@@ -23,6 +24,7 @@ function resetLoginForm() {
 });
 }
 
+//The form to create and login a new user
 function resetNewUserForm() {
     const CreateUserForm = $('#CreateUserForm');
     CreateUserForm.submit(event => {

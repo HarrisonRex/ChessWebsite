@@ -9,6 +9,7 @@ function pageLoad() {
     $("#newFriend").hide();
 }
 
+//Checks the login user when they load the page, checks if their cookie is still valid
 function checkLogin() {
 
     let token = Cookies.get("sessionToken");
@@ -36,6 +37,7 @@ function checkLogin() {
     });
 }
 
+//Sudo test function, will set a new chessboard
 function boardSetChess(){
     //To use for columns
     let Chartas=["I don't exist","A","B","C","D","E","F","G","H"];
@@ -102,6 +104,7 @@ function boardSetChess(){
     }
 }
 
+//Adds a new game to the database
 function resetNewGameForm(){
     const CreateGameForm = $('#newGameForm');
     CreateGameForm.submit(event => {
@@ -116,6 +119,7 @@ function resetNewGameForm(){
             }else{
                 $("#gameMaker").hide();
                 pageLoad();
+                selectGameRadioButtonChecker("gameSelectRad", game.gameId);
             }
         }
         })
@@ -188,7 +192,7 @@ function loadFriendsList() {
 
 function renderPendingFriend(pendingFriend) {
     return `<div>` +
-        `<div class="pendingFriendName" id="name${pendingFriend.friendsListId}">${pendingFriend.user1UN}` +
+        `<div class="pendingFriendName" id="name${pendingFriend.friendsListId}">${pendingFriend.user1UN} ` +
         `<button class="acceptPendingFriend" data-pendingFriend-friendListId="${pendingFriend.friendsListId}">` +
         `Accept` +
         `</button>` +
@@ -201,7 +205,7 @@ function renderPendingFriend(pendingFriend) {
 
 function renderFriend(friend) {
     return `<div>` +
-        `<div class="friendName" id="name${friend.friendsListId}">${friend.otherUser}` +
+        `<div class="friendName" id="name${friend.friendsListId}">${friend.otherUser} ` +
         `<button class="deleteFriend" data-friend-friendListId="${friend.friendsListId}">` +
         `Delete Friend` +
         `</button>` +
@@ -283,7 +287,7 @@ function loadNewGameOpoDropDown() {
 }
 
 function renderNewGameOpoDropDownOption(opoOpt) {
-    return `<option class="newGameOpoOption" id="opo${opoOpt.friendsListid}" value="${opoOpt.otherUser}" }>${opoOpt.otherUser}` +
+    return `<option class="newGameOpoOption" id="opo${opoOpt.friendsListid}" value="${opoOpt.otherUser}">${opoOpt.otherUser}` +
         `</option>`;
 }
 
@@ -301,7 +305,7 @@ function loadGames() {
 
                 for (let game of showGamesList) {
 
-                    if(game.ownerWhite==1){
+                    if(game.ownerWhite===1){
                         colour = "White";
                     }else{
                         colour = "Black";
@@ -311,9 +315,10 @@ function loadGames() {
                 }
             }
             $('#GamesShower').html(showGamesHTML);
+            resetDeleteGameRadio();
 
             for (let game of showGamesList){
-                if(game.gameId==currentSelect){
+                if(game.gameId===currentSelect){
                     selectGameRadioButtonChecker("gameSelectRad", game.gameId);
                 }
             }
@@ -327,8 +332,29 @@ function renderCurrentGameRadio(game, colour) {
         `Against: ` + game.otherPlayer +
         `, you are playing as ` + colour +
         `, game id:` + game.gameId +
-        `</input>` +
+        `</input> ` +
+        `<button class="deleteGameRadio" data-game-gameId="${game.gameId}">` +
+        `Delete Game` +
+        `</button>` +
         `</div>`;
+}
+
+function resetDeleteGameRadio() {
+    $('.deleteGameRadio').click(event => {
+        const gameId = $(event.target).attr('data-game-gameId');
+        $.ajax({
+            url: '/games/delete',
+            type: 'POST',
+            data: {"gameId": gameId},
+            success: response => {
+                if (response === 'OK') {
+                    pageLoad();
+                } else {
+                    alert(response);
+                }
+            }
+        })
+    })
 }
 
 function getGameRadioId() {
