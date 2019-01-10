@@ -180,7 +180,7 @@ public class FriendsListController {
             } else if (friend.getUser1UN().equals(currentUsername)) {
                 return FriendsListService.deleteById(friendId);
             }else{
-                return "That's not your friend to delete";
+                return "That's not your friend entry to delete";
             }
         }
     }

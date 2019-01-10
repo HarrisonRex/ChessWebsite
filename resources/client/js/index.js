@@ -318,7 +318,7 @@ function loadGames() {
             resetDeleteGameRadio();
 
             for (let game of showGamesList){
-                if(game.gameId===currentSelect){
+                if(game.gameId==currentSelect){
                     selectGameRadioButtonChecker("gameSelectRad", game.gameId);
                 }
             }

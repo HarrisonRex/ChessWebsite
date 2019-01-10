@@ -3,19 +3,22 @@ function pageLoad() {
     resetNewUserForm();
 }
 
-//The form for loging in a existing user
+//The form for logging in a existing user
 function resetLoginForm() {
     const loginForm = $('#loginForm');
     loginForm.submit(event => {
         event.preventDefault();
     $.ajax({
+        //Sends the request to the java on the server
         url: '/user/login',
         type: 'POST',
         data: loginForm.serialize(),
         success: response => {
+            //Checks if the response is appropriate
         if (response.startsWith('Error:')) {
         alert(response);
     } else {
+            //Sends the user to the index home page
         Cookies.set("sessionToken", response);
         window.location.href = "/client/index.html";
     }
