@@ -168,6 +168,19 @@ function loadPendingFriendsList() {
         })
 }
 
+function renderPendingFriend(pendingFriend) {
+    return `<div>` +
+        `<div class="pendingFriendName" id="name${pendingFriend.friendsListId}">${pendingFriend.user1UN} ` +
+        `<button class="acceptPendingFriend" data-pendingFriend-friendListId="${pendingFriend.friendsListId}">` +
+        `Accept` +
+        `</button>` +
+        `<button class="deletePendingFriend" data-pendingFriend-friendListId="${pendingFriend.friendsListId}">` +
+        `Reject` +
+        `</button>` +
+        `</div>` +
+        `</div>`;
+}
+
 function loadFriendsList() {
     let friendsListHTML = '';
     $.ajax({
@@ -188,19 +201,6 @@ function loadFriendsList() {
             resetDeleteFriend();
         }
     })
-}
-
-function renderPendingFriend(pendingFriend) {
-    return `<div>` +
-        `<div class="pendingFriendName" id="name${pendingFriend.friendsListId}">${pendingFriend.user1UN} ` +
-        `<button class="acceptPendingFriend" data-pendingFriend-friendListId="${pendingFriend.friendsListId}">` +
-        `Accept` +
-        `</button>` +
-        `<button class="deletePendingFriend" data-pendingFriend-friendListId="${pendingFriend.friendsListId}">` +
-        `Reject` +
-        `</button>` +
-        `</div>` +
-        `</div>`;
 }
 
 function renderFriend(friend) {
