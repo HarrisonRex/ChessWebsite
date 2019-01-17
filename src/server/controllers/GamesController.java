@@ -10,6 +10,8 @@ import server.models.Games;
 import server.models.services.GamesService;
 import server.models.User;
 import server.models.services.UserService;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import java.util.ArrayList;
 
@@ -30,8 +32,12 @@ public class GamesController {
         int creator = 0;
         int opo = 0;
         int whoWhite = 0;
+        String pgnSetup;
         String log;
         String maker;
+        Date date = new Date();
+        String Cdate = new SimpleDateFormat("yyyy.MM.dd").format(date);
+
         String currentUser = UserService.validateSessionCookie(sessionCookie);
         if (currentUser == null) {
             return "Error: Can't find you.";
@@ -55,15 +61,31 @@ public class GamesController {
         if (ownWhite==1){
             whoWhite = 1;
         }
-
         int gId = Games.nextId();
         if(whoWhite==1){
             log = "Creating new game with " + maker + " as white VS " + player2UN + " as black.";
+            pgnSetup = "[Event \"?\"]\n" +
+                    "[Site \"Cheesy Chess\"]\n" +
+                    "[Date \"" + Cdate + "\"]\n" +
+                    "[Round \"?\"]\n" +
+                    "[White \"" + maker + "\"]\n" +
+                    "[Black \"" + player2UN + "\"]\n" +
+                    "[Result \"*\"] \n" +
+                    "\n";
         }else{
             log = "Creating new game with " + maker + " as black VS " + player2UN + " as white.";
+            pgnSetup = "[Event \"?\"]\n" +
+                    "[Site \"Cheesy Chess\"]\n" +
+                    "[Date \"" + Cdate + "\"]\n" +
+                    "[Round \"?\"]\n" +
+                    "[White \"" + player2UN + "\"]\n" +
+                    "[Black \"" + maker + "\"]\n" +
+                    "[Result \"*\"] \n" +
+                    "\n";
         }
+
         Console.log(log);
-        String success = GamesService.insert(new Games(gId, creator, opo, whoWhite, null));
+        String success = GamesService.insert(new Games(gId, creator, opo, whoWhite, pgnSetup));
 
         if (!success.equals("OK")) {
             return "Error: Can't create new game.";
@@ -151,7 +173,7 @@ public class GamesController {
             }
         }
 
-        Console.log("/friendsList/delete of friendsListId: " + gameId);
+        Console.log("/games/delete of game: " + gameId);
         Games game = GamesService.selectById(gameId);
         if (game == null) {
             return "This game doesn't exist";
@@ -163,6 +185,22 @@ public class GamesController {
             }else{
                 return "That's not your game to delete";
             }
+        }
+    }
+
+    @GET
+    @Path("getOne")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getGame(@FormParam("gameId") int gameId) {
+        Console.log("/games/getOne for id: " + gameId);
+        Games game = GamesService.selectById(gameId);
+        String gamePlay;
+        if (game == null) {
+            return "Error: This game doesn't exist";
+        } else {
+            gamePlay = game.getMoveHistory();
+            return gamePlay;
         }
     }
 }

@@ -368,4 +368,16 @@ function selectGameRadioButtonChecker(name, value) {
 
 function renderSavedGameState() {
     //alert("Im a test for " + getGameRadioId());
+    boardSetChess();
+}
+
+function resetSetSelectedGame(selected) {
+    $.ajax({
+        url: '/games/getOne',
+        type: 'GET',
+        data: {"gameId": gameId},
+        success: response => {
+            alert(response)
+        }
+    })
 }
