@@ -70,7 +70,7 @@ public class GamesController {
                     "[Round \"?\"]\n" +
                     "[White \"" + maker + "\"]\n" +
                     "[Black \"" + player2UN + "\"]\n" +
-                    "[Result \"*\"] \n" +
+                    "[Result \"*\"]\n" +
                     "\n";
         }else{
             log = "Creating new game with " + maker + " as black VS " + player2UN + " as white.";
@@ -80,7 +80,7 @@ public class GamesController {
                     "[Round \"?\"]\n" +
                     "[White \"" + player2UN + "\"]\n" +
                     "[Black \"" + maker + "\"]\n" +
-                    "[Result \"*\"] \n" +
+                    "[Result \"*\"]\n" +
                     "\n";
         }
 
@@ -90,6 +90,7 @@ public class GamesController {
         if (!success.equals("OK")) {
             return "Error: Can't create new game.";
         }
+        Console.log("Game made successfully; game id: " + gId);
         return success;
     }
 
@@ -188,7 +189,7 @@ public class GamesController {
         }
     }
 
-    @GET
+    @POST
     @Path("getOne")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_PLAIN)
@@ -203,4 +204,5 @@ public class GamesController {
             return gamePlay;
         }
     }
+
 }

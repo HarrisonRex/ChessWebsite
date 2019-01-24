@@ -328,7 +328,7 @@ function loadGames() {
 
 function renderCurrentGameRadio(game, colour) {
     return `<div>` +
-        `<input type="radio" name="gameSelectRad" value="${game.gameId}" class="gameOpoName" onchange="renderSavedGameState()" id="name${game.gameId}">` +
+        `<input type="radio" name="gameSelectRad" value="${game.gameId}" class="gameOpoName" onchange="renderSavedGameSelected()" id="name${game.gameId}">` +
         `Against: ` + game.otherPlayer +
         `, you are playing as ` + colour +
         `, game id:` + game.gameId +
@@ -366,18 +366,30 @@ function selectGameRadioButtonChecker(name, value) {
     return false;
 }
 
-function renderSavedGameState() {
+function renderSavedGameSelected() {
     //alert("Im a test for " + getGameRadioId());
     boardSetChess();
+    resetSetSelectedGame(getGameRadioId());
 }
 
 function resetSetSelectedGame(selected) {
+    let gInfo = "This game is: \n \n";
+    let gData = "";
+    let lastPref = 0;
     $.ajax({
         url: '/games/getOne',
-        type: 'GET',
-        data: {"gameId": gameId},
+        type: 'POST',
+        data: {"gameId": selected},
         success: response => {
-            alert(response)
+            if (response == "Error: This game doesn't exist"){
+                alert(response)
+            }else {
+                lastPref = response.lastIndexOf("]");
+                gInfo += response.substring(0, lastPref + 1);
+                gData = response.substring(lastPref + 3);
+                alert(gInfo);
+                start(gData);
+            }
         }
     })
 }
