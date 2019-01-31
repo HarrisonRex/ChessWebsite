@@ -387,7 +387,7 @@ function resetSetSelectedGame(selected) {
                 lastPref = response.lastIndexOf("]");
                 gInfo += response.substring(0, lastPref + 1);
                 gData = response.substring(lastPref + 3);
-                alert(gInfo);
+                //alert(gInfo);
                 start(gData);
             }
         }

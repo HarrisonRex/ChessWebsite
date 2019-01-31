@@ -29,6 +29,13 @@ public class ClientController {
     }
 
     @GET
+    @Path("js/chess/{path}")
+    @Produces({"text/javascript"})
+    public byte[] getJavaScriptChessFile(@PathParam("path") String path) {
+        return getFile("client/js/chess/" + path);
+    }
+
+    @GET
     @Path("css/{path}")
     @Produces({"text/css"})
     public byte[] getCSSFile(@PathParam("path") String path) {
