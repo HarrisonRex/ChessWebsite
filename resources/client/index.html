@@ -143,8 +143,8 @@
         </div>
         <div id="userRecon"></div>
         <button id="logout">Log out</button>
-        <button id="showNewGame" onclick="$(&quot#gameMaker&quot).show(500);">Make a new game</button>
-        <button id="showNewFriend" onclick="$(&quot#newFriend&quot).show(500);">Add a new friend</button>
+        <button id="showNewGame" onclick="$(&quot#gameMaker&quot).show(500); $(&quot#newFriend&quot).hide(500);">Make a new game</button>
+        <button id="showNewFriend" onclick="$(&quot#newFriend&quot).show(500); $(&quot#gameMaker&quot).hide(500);">Add a new friend</button>
         <button onclick="pageLoad()">Load Page</button>
 
         <div id="gameMaker">
