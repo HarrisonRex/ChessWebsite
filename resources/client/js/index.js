@@ -386,9 +386,26 @@ function resetSetSelectedGame(selected) {
             }else {
                 lastPref = response.lastIndexOf("]");
                 gInfo += response.substring(0, lastPref + 1);
-                gData = response.substring(lastPref + 3);
+                gData = response.substring(lastPref + 2);
                 //alert(gInfo);
                 start(gData);
+            }
+        }
+    })
+}
+
+function outputFullGameData(selected) {
+    let gInfo = "The PGN file for this game is: \n";
+    $.ajax({
+        url: '/games/getOne',
+        type: 'POST',
+        data: {"gameId": selected},
+        success: response => {
+            if (response == "Error: This game doesn't exist"){
+                alert(response)
+            }else{
+                gInfo += response;
+                alert(gInfo);
             }
         }
     })

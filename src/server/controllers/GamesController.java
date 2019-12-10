@@ -196,12 +196,10 @@ public class GamesController {
     public String getGame(@FormParam("gameId") int gameId) {
         Console.log("/games/getOne for id: " + gameId);
         Games game = GamesService.selectById(gameId);
-        String gamePlay;
         if (game == null) {
             return "Error: This game doesn't exist";
         } else {
-            gamePlay = game.getMoveHistory();
-            return gamePlay;
+            return game.getMoveHistory();
         }
     }
 
